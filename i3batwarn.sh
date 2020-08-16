@@ -13,7 +13,7 @@ export LOCK_FILE=/tmp/battery_state.lock
 # check if another copy is running
 if [[ -a $LOCK_FILE ]]; then
 
-    pid=$(cat $LOCK_FILE | awk '{print $1}')
+  pid=$(cat $LOCK_FILE | awk '{print $1}')
 	ppid=$(cat $LOCK_FILE | awk '{print $2}')
 	# validate contents of previous lock file
 	vpid=${pid:-"0"}
@@ -52,13 +52,13 @@ ACPI_PATH="/sys/class/power_supply/$BATTERY"
 STAT=$(cat $ACPI_PATH/status)
 
 # get remaining energy value
-REM=`grep "POWER_SUPPLY_ENERGY_NOW" $ACPI_PATH/uevent | cut -d= -f2`
+REM=`grep "POWER_SUPPLY_CHARGE_NOW" $ACPI_PATH/uevent | cut -d= -f2`
 
 # get full energy value
-FULL=`grep "POWER_SUPPLY_ENERGY_FULL_DESIGN" $ACPI_PATH/uevent | cut -d= -f2`
+FULL=`grep "POWER_SUPPLY_CHARGE_FULL_DESIGN" $ACPI_PATH/uevent | cut -d= -f2`
 
 # get current energy value in percent
-PERCENT=`echo $(( $REM * 100 / $FULL ))`
+PERCENT=$((REM * 100 / FULL))
 
 # set error message
 MESSAGE="Low battery warning, find charger"
